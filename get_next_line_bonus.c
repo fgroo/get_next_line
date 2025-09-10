@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fgorlich <fgorlich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 21:24:20 by nix               #+#    #+#             */
-/*   Updated: 2025/02/12 19:29:06 by fgorlich         ###   ########.fr       */
+/*   Created: 2025/02/06 21:35:17 by nix               #+#    #+#             */
+/*   Updated: 2025/02/12 19:27:54 by fgorlich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*fill_buffer_until_newline(int fd, char *buffer)
 {
