@@ -6,7 +6,7 @@
 /*   By: fgroo <student@42.eu>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 17:10:53 by fgroo             #+#    #+#             */
-/*   Updated: 2025/11/08 17:53:34 by fgroo            ###   ########.fr       */
+/*   Updated: 2025/11/08 21:00:06 by fgroo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_next_line(int fd)
 	t_tmp			tmp;
 
 	tmp = (t_tmp){0, -1, NULL};
-	if (fd < 0 || !BUF || fd >= 256)
+	if (fd < 0 || !BUF || fd >= 2048 || (read(fd, (char []){0}, 0) < 0))
 		return (NULL);
 	while (1)
 	{
@@ -32,11 +32,11 @@ char	*get_next_line(int fd)
 	}
 	if (v.rd[fd] != -1 && tmp.len > 0)
 	{
-		(free(0), tmp.res = malloc(tmp.len + 1), tmp.res[tmp.len] = 0);
+		tmp.res = malloc(tmp.len + 1);
 		if (!tmp.res)
 			return (NULL);
-		while (++tmp.i < tmp.len)
-			tmp.res[tmp.i] = v.buf[fd][tmp.i];
+		while (++tmp.i < tmp.len && v.buf[fd][tmp.i])
+			(free(0), tmp.res[tmp.i] = v.buf[fd][tmp.i], tmp.res[tmp.len] = 0);
 	}
 	return (tmp.res);
 }
