@@ -3,96 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgorlich <fgorlich@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgroo <student@42.eu>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 21:24:20 by nix               #+#    #+#             */
-/*   Updated: 2025/02/12 19:29:06 by fgorlich         ###   ########.fr       */
+/*   Created: 2025/11/08 17:10:58 by fgroo             #+#    #+#             */
+/*   Updated: 2025/11/08 17:53:46 by fgroo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*fill_buffer_until_newline(int fd, char *buffer)
-{
-	char	*buf;
-	char	*tmp;
-	ssize_t	bytes_read;
-
-	buf = malloc(BUFFER_SIZE + 1);
-	if (!buf)
-		return (NULL);
-	while (ft_strchr(buffer, '\n') == NULL)
-	{
-		bytes_read = read(fd, buf, BUFFER_SIZE);
-		if (bytes_read < 0)
-			return (free(buf), free(buffer), NULL);
-		if (bytes_read == 0)
-			break ;
-		buf[bytes_read] = '\0';
-		if (!buffer)
-			buffer = ft_strdup(buf);
-		else
-		{
-			tmp = ft_strjoin(buffer, buf);
-			(free(buffer), buffer = tmp);
-		}
-	}
-	return (free(buf), buffer);
-}
-
 char	*get_next_line(int fd)
 {
-	char		*tmp;
-	char		*line;
-	char		*newline;
-	static char	*buffers[FD_MAX];
-	size_t		line_len;
+	static t_vars	v;
+	t_tmp			tmp;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= FD_MAX)
+	tmp = (t_tmp){0, -1, NULL};
+	if (fd < 0 || !BUF || fd >= 256)
 		return (NULL);
-	buffers[fd] = fill_buffer_until_newline(fd, buffers[fd]);
-	if (!buffers[fd] || ft_strlen(buffers[fd]) == 0)
-		return (free(buffers[fd]), buffers[fd] = NULL, NULL);
-	newline = ft_strchr(buffers[fd], '\n');
-	if (newline)
+	while (1)
 	{
-		line_len = newline - buffers[fd] + 1;
-		line = ft_substr(buffers[fd], 0, line_len);
-		tmp = ft_strdup(buffers[fd] + line_len);
-		(free(buffers[fd]), buffers[fd] = tmp);
+		if (v.pos[fd] >= v.rd[fd] && v.rd[fd] != -1)
+			(free(0), v.pos[fd] = 0, v.rd[fd] = read(fd, v.tmp[fd], BUF));
+		if (!v.rd[fd])
+			break ;
+		v.buf[fd][tmp.len++] = v.tmp[fd][v.pos[fd]++];
+		if (v.buf[fd][tmp.len - 1] == '\n')
+			break ;
 	}
-	else
+	if (v.rd[fd] != -1 && tmp.len > 0)
 	{
-		line = ft_strdup(buffers[fd]);
-		(free(buffers[fd]), buffers[fd] = NULL);
+		(free(0), tmp.res = malloc(tmp.len + 1), tmp.res[tmp.len] = 0);
+		if (!tmp.res)
+			return (NULL);
+		while (++tmp.i < tmp.len)
+			tmp.res[tmp.i] = v.buf[fd][tmp.i];
 	}
-	return (line);
+	return (tmp.res);
 }
-
-// int main(void)
-// {
-// 	int fd1 = open("test", O_RDONLY);
-// 	int fd2 = open("test2", O_RDONLY);
-// 	char *line;
-
-// 	//Read lines alternately from fd1 and fd2
-// 	while (1)
-// 	{
-// 		line = get_next_line(fd1);
-// 		if (line)
-// 		{
-// 			printf("FD1: %s", line);
-// 			free(line);
-// 		}
-// 		line = get_next_line(fd2);
-// 		if (line) {
-// 			printf("FD2: %s", line);
-// 			free(line);
-// 		}
-// 		if (!line) // Break when both fds reach EOF
-// 			break;
-// 	}
-// 	close(fd1);
-// 	close(fd2);
-// 	return (0);
-//  }

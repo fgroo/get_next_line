@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgorlich <fgorlich@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgroo <student@42.eu>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 21:35:24 by nix               #+#    #+#             */
-/*   Updated: 2025/02/12 19:22:36 by fgorlich         ###   ########.fr       */
+/*   Created: 2025/11/08 17:11:07 by fgroo             #+#    #+#             */
+/*   Updated: 2025/11/08 17:18:22 by fgroo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,32 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 100000
 # endif
 
-# ifndef FD_MAX
-#  define FD_MAX 1024
+# ifndef BUF
+#  define BUF BUFFER_SIZE
 # endif
 
-# include <stdlib.h>
 # include <unistd.h>
-# include <fcntl.h>
+# include <stdlib.h>
+
+typedef struct s_vars
+{
+	char	buf[256][100000];
+	char	tmp[256][100000];
+	ssize_t	pos[256];
+	ssize_t	rd[256];
+	char	*res;
+}	t_vars;
+
+typedef struct s_tmp
+{
+	ssize_t	len;
+	ssize_t	i;
+	char	*res;
+}	t_tmp;
 
 char	*get_next_line(int fd);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strdup(const char *s);
-char	*ft_strchr(const char *s, int c);
-size_t	ft_strlen(const char *s);
 
 #endif
