@@ -6,7 +6,7 @@
 /*   By: fgroo <student@42.eu>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 17:11:07 by fgroo             #+#    #+#             */
-/*   Updated: 2025/11/08 20:59:41 by fgroo            ###   ########.fr       */
+/*   Updated: 2025/11/10 23:46:58 by fgroo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@
 
 typedef struct s_vars
 {
-	char	buf[2048][100000];
-	char	tmp[2048][100000];
-	ssize_t	pos[2048];
-	ssize_t	rd[2048];
+	char	buf[1024][100000];
+	char	tmp[1024][100000];
+	ssize_t	pos[1024];
+	ssize_t	rd[1024];
 	char	*res;
 }	t_vars;
 

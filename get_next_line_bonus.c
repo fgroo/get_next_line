@@ -6,7 +6,7 @@
 /*   By: fgroo <student@42.eu>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 17:10:53 by fgroo             #+#    #+#             */
-/*   Updated: 2025/11/08 21:00:06 by fgroo            ###   ########.fr       */
+/*   Updated: 2025/11/10 23:48:41 by fgroo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ char	*get_next_line(int fd)
 	t_tmp			tmp;
 
 	tmp = (t_tmp){0, -1, NULL};
-	if (fd < 0 || !BUF || fd >= 2048 || (read(fd, (char []){0}, 0) < 0))
-		return (NULL);
+	if (fd < 0 || !BUF || fd >= 1024 || (read(fd, 0, 0) < 0))
+		return (v.rd[fd] = 0, NULL);
 	while (1)
 	{
 		if (v.pos[fd] >= v.rd[fd] && v.rd[fd] != -1)
