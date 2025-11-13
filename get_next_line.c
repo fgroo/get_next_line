@@ -6,7 +6,7 @@
 /*   By: fgroo <student@42.eu>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 17:10:58 by fgroo             #+#    #+#             */
-/*   Updated: 2025/11/10 23:48:09 by fgroo            ###   ########.fr       */
+/*   Updated: 2025/11/13 12:31:51 by fgroo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ char	*get_next_line(int fd)
 	t_tmp			tmp;
 
 	tmp = (t_tmp){0, -1, NULL};
-	if (fd < 0 || !BUF || fd >= 1024 || (read(fd, 0, 0) < 0))
-		return (v.rd[fd] = 0, NULL);
+	if (fd < 0 || !BUFFER_SIZE || fd >= 1024 || (read(fd, 0, 0) < 0))
+		return (v.r[fd] = 0, NULL);
 	while (1)
 	{
-		if (v.pos[fd] >= v.rd[fd] && v.rd[fd] != -1)
-			(free(0), v.pos[fd] = 0, v.rd[fd] = read(fd, v.tmp[fd], BUF));
-		if (!v.rd[fd])
+		if (v.p[fd] >= v.r[fd] && v.r[fd] != -1)
+			(free(0), v.p[fd] = 0, v.r[fd] = read(fd, v.tmp[fd], BUFFER_SIZE));
+		if (!v.r[fd])
 			break ;
-		v.buf[fd][tmp.len++] = v.tmp[fd][v.pos[fd]++];
+		v.buf[fd][tmp.len++] = v.tmp[fd][v.p[fd]++];
 		if (v.buf[fd][tmp.len - 1] == '\n')
 			break ;
 	}
-	if (v.rd[fd] != -1 && tmp.len > 0)
+	if (v.r[fd] != -1 && tmp.len > 0)
 	{
 		tmp.res = malloc(tmp.len + 1);
 		if (!tmp.res)
